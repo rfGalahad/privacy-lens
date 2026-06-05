@@ -1,0 +1,109 @@
+.login-page .form-panel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-surface);
+  padding: 2rem;
+}
+
+.login-page .form-wrapper {
+  width: 100%;
+  max-width: 420px;
+  animation: fadeIn 0.7s ease both;
+}
+
+/* ── TITLE ────────────────────────────────────── */
+
+.title {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 3vw, 2rem);
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--color-text-primary);
+  margin-bottom: 0.45rem;
+}
+
+.subtitle {
+  font-size: 0.95rem;
+  color: var(--color-text-secondary);
+  margin-bottom: 2rem;
+}
+
+
+/* ── DIVIDER ────────────────────────────────────── */
+
+.login-page .divider {
+  position: relative;
+  text-align: center;
+  margin: 1.5rem 0;
+}
+
+.login-page .divider::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--color-border);
+}
+
+.login-page .divider span {
+  position: relative;
+  background: var(--color-surface);
+  padding: 0 0.85rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+/* ── FIELDS ────────────────────────────────────── */
+
+.login-page .form { 
+  display: flex; 
+  flex-direction: column; 
+  gap: 1.1rem; 
+}
+
+.login-page .fieldset { 
+  display: flex; 
+  flex-direction: column; 
+  gap: 1.1rem; 
+  border: none; 
+}
+
+/* ── REGISTER ────────────────────────────────────── */
+
+.login-page .register-prompt {
+  margin-top: 1.5rem;
+  text-align: center;
+  font-size: 0.88rem;
+  color: var(--color-text-muted);
+}
+
+.login-page .register-link {
+  color: var(--color-accent);
+  font-weight: 500;
+  text-decoration: none;
+  transition: color var(--transition);
+}
+
+.login-page .register-link:hover {
+  text-decoration: underline;
+}
+
+[data-theme="light"] .register-link {
+  color: #071a35;
+}
+
+/* ── KEY FRAMES ────────────────────────────────────── */
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateX(16px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
