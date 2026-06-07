@@ -22,7 +22,8 @@ interface FormFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label: string;
   error?: string;
   hint?: string;
-  aside?: React.ReactNode; // e.g. "Forgot password?" link
+  aside?: React.ReactNode;
+  inputRef?: React.RefObject<HTMLInputElement | null>;
 }
 
 const FormField = ({ 

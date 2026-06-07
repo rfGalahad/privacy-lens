@@ -61,7 +61,11 @@ const LoginForm = () => {
         </div>
 
         {/* Form */}
-        <form className="form" noValidate>
+        <form 
+          className="form" 
+          onSubmit={e => { e.preventDefault(); handleSubmit(); }}
+          noValidate
+        >
           <fieldset className="fieldset">
             <legend className="visually-hidden">Login credentials</legend>
             {/* Email Field */}
@@ -105,10 +109,7 @@ const LoginForm = () => {
             />
           </fieldset>
 
-          <SubmitButton 
-            isLoading={isLoading} 
-            handleSubmit={handleSubmit} 
-          />
+          <SubmitButton isLoading={isLoading} label="Sign In" />
         </form>
 
         {/* Register Prompt */}

@@ -1,0 +1,38 @@
+.rule-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  margin-bottom: var(--space-4);
+  list-style: none;
+  padding: 0;
+}
+
+.rule {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--color-text-muted);
+  transition: color var(--transition);
+}
+
+.rule--passed {
+  color: #4ab87e;
+}
+
+.rule-icon {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1px solid currentColor;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background var(--transition), border-color var(--transition);
+}
+
+.rule--passed .rule-icon {
+  background: #4ab87e;
+  border-color: #4ab87e;
+}
