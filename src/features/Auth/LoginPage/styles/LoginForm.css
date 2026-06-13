@@ -20,6 +20,7 @@
   line-height: 1.15;
   color: var(--color-text-primary);
   margin-bottom: var(--space-1);
+  margin-top: var(--space-6);
 }
 
 .subtitle {
