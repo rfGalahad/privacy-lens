@@ -1,5 +1,3 @@
-import { type PasswordStrengthLevel } from "./types";
-
 export const PASSWORD_RULES = [
   { 
     label: "At least 8 characters", 
@@ -20,8 +18,8 @@ export const PASSWORD_RULES = [
 ];
 
 export const STRENGTH_COLORS: Record<PasswordStrengthLevel, string> = {
-  weak:          "#e05252",
-  fair:          "#f0a500",
-  strong:        "#4ab87e",
+  weak: "#e05252",
+  fair: "#f0a500",
+  strong: "#4ab87e",
   "very-strong": "#F7CF13",
 };

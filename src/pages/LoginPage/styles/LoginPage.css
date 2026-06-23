@@ -1,0 +1,33 @@
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+.login-page {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 100vh;
+}
+
+@media (max-width: 900px) {
+  .login-page {
+    grid-template-columns: 1fr;
+  }
+  .login-page .image-panel {
+    display: none;
+  }
+  .login-page .form-panel {
+    grid-row: 1;
+    padding: 2rem 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-page .form-panel  { padding: 1.5rem 1rem; }
+  .login-page .title       { font-size: 1.75rem; }
+  .login-page .form-wrapper { max-width: 100%; }
+}

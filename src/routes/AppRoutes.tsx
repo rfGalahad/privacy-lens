@@ -1,7 +1,7 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 
-import LoginPage from '@/features/Auth/LoginPage';
-import ChangePasswordPage from '@/features/Auth/ChangePasswordPage';
+import LoginPage from '@/pages/LoginPage';
+import ChangePasswordPage from '@/pages/ChangePasswordPage';
 import DashboardLayout from '@/layout/DashboardLayout';
 
 export default function AppRoutes() {

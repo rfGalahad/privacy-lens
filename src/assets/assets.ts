@@ -3,7 +3,7 @@ const BASE = import.meta.env.VITE_CLOUDINARY_BASE;
 const cloudinary = (publicId: string, transforms = "") =>
   `${BASE}/${transforms}${publicId}`;
 
-export const assets = {
+const assets = {
   pdgBackground: cloudinary(
     "pdg-background_babmmc", 
     "w_1920,q_auto,f_auto/"
@@ -13,3 +13,5 @@ export const assets = {
     "w_200,q_auto,f_auto/"
   ),
 } as const;
+
+export default assets;

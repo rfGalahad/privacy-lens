@@ -1,0 +1,115 @@
+.form-panel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-surface);
+}
+
+.form-wrapper {
+  width: 100%;
+  max-width: 420px;
+  animation: fadeIn 0.7s ease both;
+}
+
+/* ── TITLE ────────────────────────────────────── */
+
+.title {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 3vw, 1rem);
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-1);
+  margin-top: var(--space-6);
+}
+
+.subtitle {
+  font-size: 0.95rem;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-5);
+}
+
+/* ── DIVIDER ────────────────────────────────────── */
+
+.divider {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: var(--space-5) 0;
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--color-border);
+}
+
+.divider span {
+  position: relative;
+  display: inline-block;
+  background: var(--color-surface);
+  padding: 0 var(--space-2);
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  z-index: 1;
+}
+
+/* ── FIELDS ────────────────────────────────────── */
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.fieldset {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  border: none;
+}
+
+/* ── REGISTER ────────────────────────────────────── */
+
+.register-prompt {
+  margin-top: var(--space-4);
+  text-align: center;
+  font-size: 0.88rem;
+  color: var(--color-text-muted);
+}
+
+.register-link {
+  color: var(--color-accent);
+  font-weight: 500;
+  text-decoration: none;
+  transition: color var(--transition);
+}
+
+.register-link:hover {
+  text-decoration: underline;
+}
+
+[data-theme="light"] .register-link {
+  color: #071a35;
+}
+
+/* ── KEY FRAMES ────────────────────────────────────── */
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateX(var(--space-4)); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+
