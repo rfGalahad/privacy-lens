@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { LogIn } from "lucide-react";
 
 import SuccessPanel from "./SuccessPanel";
 import ValidationRules from "./ValidationRules";
@@ -6,13 +7,13 @@ import ValidationRules from "./ValidationRules";
 import assets from "@/assets/assets";
 import FormField from "@/shared/components/FormField";
 import SubmitButton from "@/shared/components/SubmitButton";
+import LinkButton from "@/shared/components/LinkButton";
 import { useGoogleAuth } from "@/features/Auth/useGoogleAuth";
 import { useChangePassword } from "@/features/Auth/useChangePassword";
 import { STRENGTH_COLORS } from "@/features/Auth/constants";
 import type { AuthMethod } from "@/features/Auth/types";
 
 import "../styles/ChangePasswordPage.css";
-import ErrorPanel from "./ErrorPanel";
 
 
 export default function ChangePasswordPage() {
@@ -49,7 +50,10 @@ export default function ChangePasswordPage() {
 
   if (!sessionReady && !sessionError) {
     return (
-      <main className="page">
+      <main 
+        className="page" 
+        style={{ backgroundImage: `url(${assets.pdgBackground})` }}
+      > 
         <section className="card">
           <p className="subtitle">Verifying your link…</p>
         </section>
@@ -57,8 +61,28 @@ export default function ChangePasswordPage() {
     );
   }
 
-  if (sessionError) return <ErrorPanel />
-  
+  /*
+  if (sessionError){
+    return (
+      <main 
+        className="page"
+        style={{ backgroundImage: `url(${assets.pdgBackground})` }}
+      >
+        <section className="card">
+          <h1 className="heading">Link <em>invalid.</em></h1>
+          <p className="subtitle">
+            This page is only accessible from the link sent to your email.
+          </p>
+          <LinkButton 
+            href="/login" 
+            label="Back to login" 
+            icon={LogIn}
+          />
+        </section>
+      </main>
+    )
+  } 
+  */
 
   return (
     <main
@@ -70,6 +94,7 @@ export default function ChangePasswordPage() {
           <SuccessPanel method={authMethod} />
         ) : (
           <>
+            {/* HEADER */}
             <h1 className="heading">
               Create your <em>account</em>
             </h1>
@@ -77,8 +102,7 @@ export default function ChangePasswordPage() {
               Set up access to continue to your subscription.
             </p>
 
-            <div className="divider" role="separator" />
-
+            {/* GOOGLE LOGIN BUTTON */}
             <button
               type="button"
               className="google-btn"
@@ -93,6 +117,7 @@ export default function ChangePasswordPage() {
               <span className="or-divider__label">or set a password</span>
             </div>
 
+            {/* CHANGE PASSWORD FORM */}
             <form onSubmit={handleSubmit} noValidate>
               <FormField
                 id="new-password"
@@ -171,4 +196,4 @@ function GoogleLogo() {
       <path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0 5.482 0 2.438 2.017.957 4.958L3.964 6.29C4.672 4.163 6.656 3.58 9 3.58z" fill="#EA4335"/>
     </svg>
   );
-}
+} 

@@ -17,7 +17,7 @@ export const PASSWORD_RULES = [
   },
 ];
 
-export const STRENGTH_COLORS: Record<PasswordStrengthLevel, string> = {
+export const STRENGTH_COLORS = {
   weak: "#e05252",
   fair: "#f0a500",
   strong: "#4ab87e",

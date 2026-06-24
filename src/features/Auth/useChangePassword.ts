@@ -7,32 +7,38 @@ import { getPasswordStrength } from "@/shared/utils/getPasswordStrength";
 import { PASSWORD_RULES } from "./constants";
 import type { SubmitStatus, AuthMethod } from "./types";
 
+const MAX_PASSWORD_LENGTH = 50;
+
 interface UseChangePasswordOptions {
   onSuccess?: (method: AuthMethod) => void;
   onError?: (error: Error) => void;
 }
 
 export function useChangePassword({ onSuccess, onError }: UseChangePasswordOptions = {}) {
-  const [password, setPassword] = useState("");
-  const [confirm, setConfirm] = useState("");
+  
+  const [password, setPasswordRaw] = useState("");
+  const [confirm, setConfirmRaw] = useState("");
   const [status, setStatus] = useState<SubmitStatus>("idle");
   const [isLoading, setIsLoading] = useState(false);
   const [sessionReady, setSessionReady] = useState(false);
   const [sessionError, setSessionError] = useState(false);
   const passwordInputRef = useRef<HTMLInputElement>(null);
 
+  const setPassword = (value: string) => setPasswordRaw(value.slice(0, MAX_PASSWORD_LENGTH));
+  const setConfirm  = (value: string) => setConfirmRaw(value.slice(0, MAX_PASSWORD_LENGTH));
+
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event: AuthChangeEvent, session) => {
         if (event === "INITIAL_SESSION" && !session) {
-          setSessionError(true);  // ← no token in URL, direct navigation
+          setSessionError(true);
           return;
         }
         if (event === "INITIAL_SESSION" || event === "PASSWORD_RECOVERY") {
           setSessionReady(true);
         }
         if (event === "SIGNED_IN") {
-          onSuccess?.("google");  // ← called here after OAuth redirect
+          onSuccess?.("google");
         }
       }
     );
@@ -60,7 +66,7 @@ export function useChangePassword({ onSuccess, onError }: UseChangePasswordOptio
     try {
       const { error } = await supabase.auth.updateUser({ password });
       if (error) throw error;
-      onSuccess?.("password");  // ← called here after password update
+      onSuccess?.("password");
       setStatus("success");
     } catch (err) {
       const error = err instanceof Error ? err : new Error("Password update failed");
@@ -73,18 +79,19 @@ export function useChangePassword({ onSuccess, onError }: UseChangePasswordOptio
   };
 
   return {
-    password, 
+    password,
     setPassword,
-    confirm,  
+    confirm,
     setConfirm,
-    status,   
+    status,
     isLoading,
     sessionReady,
     sessionError,
-    strength, 
-    hasMismatch, 
+    strength,
+    hasMismatch,
     canSubmit,
     passwordInputRef,
     handleSubmit,
+    maxPasswordLength: MAX_PASSWORD_LENGTH,
   };
 }
