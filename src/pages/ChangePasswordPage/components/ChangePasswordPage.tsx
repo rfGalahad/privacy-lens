@@ -61,7 +61,6 @@ export default function ChangePasswordPage() {
     );
   }
 
-  /*
   if (sessionError){
     return (
       <main 
@@ -82,7 +81,7 @@ export default function ChangePasswordPage() {
       </main>
     )
   } 
-  */
+  
 
   return (
     <main
