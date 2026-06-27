@@ -3,9 +3,9 @@ import { useState } from "react";
 import GoogleButton from "./GoogleButton";
 import { validate } from "../utils/loginValidation";
 
-import FormField from "@/shared/components/FormField";
-import SubmitButton from "@/shared/components/SubmitButton";
-import BrandLogo from "@/shared/components/BrandLogo/BrandLogo";
+import FormField from "@/components/FormField";
+import SubmitButton from "@/components/SubmitButton";
+import BrandLogo from "@/components/BrandLogo/BrandLogo";
 
 import "../styles/LoginForm.css";
 

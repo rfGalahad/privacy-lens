@@ -1,4 +1,4 @@
-import { PASSWORD_RULES } from '@/features/Auth/constants';
+import { PASSWORD_RULES } from '@/features/Auth/auth.constants';
 import '../styles/ValidationRules.css';
 
 const CheckIcon = () => {
