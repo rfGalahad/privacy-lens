@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { Bell, Sun, Moon, LogOut, Settings, User } from "lucide-react";
-import BrandLogo from "@/shared/components/BrandLogo/BrandLogo";
+import BrandLogo from "@/components/BrandLogo/BrandLogo";
 import "../styles/Topbar.css";
 
 const Topbar = () => {

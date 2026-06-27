@@ -1,6 +1,6 @@
 import { Check, LogIn } from 'lucide-react';
 
-import LinkButton from '@/shared/components/LinkButton';
+import LinkButton from '@/components/LinkButton';
 
 import '../styles/SuccessPanel.css';
 
