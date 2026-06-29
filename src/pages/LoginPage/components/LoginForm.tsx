@@ -1,11 +1,11 @@
-import { useState } from "react";
-
 import GoogleButton from "./GoogleButton";
-import { validate } from "../utils/loginValidation";
 
 import FormField from "@/components/FormField";
 import SubmitButton from "@/components/SubmitButton";
 import BrandLogo from "@/components/BrandLogo/BrandLogo";
+
+import { useForm } from "@/hooks/useForm";
+import { email, required } from "@/utils/validators";
 
 import "../styles/LoginForm.css";
 
@@ -15,31 +15,17 @@ const PASSWORD_MAX = 128;
 
 const LoginForm = () => {
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  const [isLoading, setIsLoading] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
-
-  const errors = validate(email, password);
-
-  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.value.length <= EMAIL_MAX) setEmail(e.target.value);
-  };
-
-  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.value.length <= PASSWORD_MAX) setPassword(e.target.value);
-  };
-
-  const handleSubmit = () => {
-    setSubmitted(true);                          
-    if (errors.email || errors.password) return;
-    setIsLoading(true);
-    setTimeout(() => setIsLoading(false), 2000);
-  };
-
-  const isEmailInvalid    = submitted && !!errors.email;
-  const isPasswordInvalid = submitted && !!errors.password;
+  const form = useForm({
+    initialValues: { 
+      email: "",
+      password: "" 
+    },
+    validationRules: {
+      email: [required(), email()],
+      password: [required()],
+    },
+    // onSubmit: async (values) => {},
+  });
 
   return (
     <section className="form-panel">
@@ -60,11 +46,7 @@ const LoginForm = () => {
         </div>
 
         {/* Form */}
-        <form 
-          className="form" 
-          onSubmit={e => { e.preventDefault(); handleSubmit(); }}
-          noValidate
-        >
+        <form className="form" onSubmit={form.handleSubmit} noValidate>
           <fieldset className="fieldset">
             <legend className="visually-hidden">Login credentials</legend>
             {/* Email Field */}
@@ -75,11 +57,11 @@ const LoginForm = () => {
               name="email"
               autoComplete="email"
               placeholder="you@example.com"
-              value={email}
+              value={form.values.email}
               maxLength={EMAIL_MAX}
-              onChange={handleEmailChange}
+              onChange={form.handleChange}
               required
-              error={isEmailInvalid ? errors.email : undefined}
+              error={form.touched.email ? form.errors.email : undefined}
             />
 
             {/* Password Field */}
@@ -90,11 +72,11 @@ const LoginForm = () => {
               name="password"
               autoComplete="current-password"
               placeholder="••••••••"
-              value={password}
+              value={form.values.password}
               maxLength={PASSWORD_MAX}
-              onChange={handlePasswordChange}
+              onChange={form.handleChange}
+              error={form.touched.password ? form.errors.password : undefined}
               required
-              error={isPasswordInvalid ? errors.password : undefined}
               aside={
                 <a href="#forgot" className="forgot-link" tabIndex={0}>
                   Forgot password?
@@ -103,7 +85,7 @@ const LoginForm = () => {
             />
           </fieldset>
 
-          <SubmitButton isLoading={isLoading} label="Sign In" />
+          <SubmitButton isLoading={form.isSubmitting} label="Sign In" />
         </form>
 
         {/* Register Prompt */}

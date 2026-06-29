@@ -1,12 +1,12 @@
 import { Routes, Route, Navigate, Outlet } from 'react-router-dom';
 
 import LoginPage from '@/pages/LoginPage';
-import ChangePasswordPage from '@/pages/ChangePasswordPage';
+import SetupAccountPage from '@/pages/SetupAccountPage';
 import DashboardLayout from '@/layout/DashboardLayout';
 import LoadingPage from './components/LoadingPage';
 
-import { useAuth } from '@/features/Auth/hooks/useAuth';
-import { AuthProvider } from './features/Auth';
+import { useAuth } from '@/features/auth/hooks/useAuth';
+import { AuthProvider } from './features/auth';
 
 function ProtectedRoute() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -20,7 +20,7 @@ export default function App() {
       <Routes>
         {/* Public Routes */}
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/change-password" element={<ChangePasswordPage />} />
+        <Route path="/setup-account" element={<SetupAccountPage />} />
 
         {/* Protected Routes */}
         <Route element={<ProtectedRoute />}>

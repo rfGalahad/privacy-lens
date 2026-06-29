@@ -15,13 +15,14 @@ export function useSessionGuard() {
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
-        if (event === "INITIAL_SESSION" && !session) {
-          setStatus("invalid");
+        if (event === "INITIAL_SESSION") {
+          setStatus(session ? "pending" : "invalid");
           return;
         }
-        if (event === "INITIAL_SESSION" || event === "PASSWORD_RECOVERY") {
+        if (event === "PASSWORD_RECOVERY") {
           setStatus("valid");
         }
+        setStatus("invalid");
       }
     );
     return () => subscription.unsubscribe();

@@ -12,11 +12,11 @@ import GoogleButton from "@/components/GoogleButton/GoogleButton";
 import { useForm } from "@/hooks/useForm";
 import { useSessionGuard } from "@/hooks/useSessionGuard";
 import { supabase } from "@/lib/supabaseClient";
-import { useGoogleAuth } from "@/features/Auth/hooks/useGoogleAuth";
+import { useGoogleAuth } from "@/features/auth/hooks/useGoogleAuth";
 import { matches, minLength, required } from "@/utils/validators";
 import { getPasswordStrength } from "@/utils/getPasswordStrength";
 
-import "../styles/ChangePasswordPage.css";
+import "../styles/SetupAccountPage.css";
 
 // ─────────────────────────────────────────────
 // Sub Component
@@ -32,7 +32,7 @@ const PageWrapper = ({ children }: { children: React.ReactNode }) => (
 // Main Component
 // ─────────────────────────────────────────────
 
-export default function ChangePasswordPage() {
+export default function SetupAccountPage() {
 
   const status = useSessionGuard();
 

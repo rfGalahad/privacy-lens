@@ -1,4 +1,4 @@
-import { STRENGTH_COLORS } from "@/features/Auth/auth.constants";
+import { STRENGTH_COLORS } from "@/features/auth/auth.constants";
 import { getPasswordStrength } from "@/utils/getPasswordStrength";
 
 interface Rule {
