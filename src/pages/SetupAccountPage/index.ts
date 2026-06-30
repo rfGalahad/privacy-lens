@@ -1,1 +1,1 @@
-export { default } from "./components/ChangePasswordPage";
+export { default } from "./components/SetupAccountPage";
