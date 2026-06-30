@@ -8,7 +8,7 @@ import ImagePanel from "./ImagePanel";
 import ThemeToggle from "./ThemeToggle";
 import LoginForm from "./LoginForm";
 
-import "./styles/LoginPage.css";
+import "../styles/LoginPage.css";
 
 
 const LoginPage = () => {
