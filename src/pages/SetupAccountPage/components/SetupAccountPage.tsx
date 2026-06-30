@@ -79,7 +79,7 @@ export default function SetupAccountPage() {
       <PageWrapper>
           <h1 className="heading">Link <em>invalid.</em></h1>
           <p className="subtitle">
-            This page is only accessible from the link sent to your email.
+            The account setup link you're using is invalid or has expired. Please request a new setup email to create your account.
           </p>
           <LinkButton 
             href="/login" 
