@@ -1,7 +1,7 @@
 import { LogIn } from "lucide-react";
 
-import ValidationRules from "./ValidationRules";
-import PasswordStrength from "./PasswordStrength";
+import ValidationRules from "./components/ValidationRules";
+import PasswordStrength from "./components/PasswordStrength";
 
 import assets from "@/assets/assets";
 import FormField from "@/components/FormField";
@@ -16,7 +16,7 @@ import { useGoogleAuth } from "@/features/auth/hooks/useGoogleAuth";
 import { matches, minLength, required } from "@/utils/validators";
 import { getPasswordStrength } from "@/utils/getPasswordStrength";
 
-import "../styles/SetupAccountPage.css";
+import "./styles/SetupAccountPage.css";
 
 // ─────────────────────────────────────────────
 // Sub Component

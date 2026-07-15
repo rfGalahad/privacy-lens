@@ -1,1 +1,1 @@
-export { default } from "./components/SetupAccountPage";
+export { default } from "./SetupAccountPage";
