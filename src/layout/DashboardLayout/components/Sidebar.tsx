@@ -1,40 +1,57 @@
-import { useState } from "react";
+import { NavLink } from "react-router-dom";
+import {
+  LayoutDashboard,
+  ClipboardList,
+  ShieldCheck,
+  AlertTriangle,
+  FileBarChart2,
+  Building2,
+  ScrollText,
+  Settings,
+  type LucideIcon,
+} from "lucide-react";
 import "../styles/Sidebar.css";
 
-type NavItem = {
+export interface SidebarItem {
+  key: string;
   label: string;
-  href: string;
-  icon: string;
-};
+  icon: LucideIcon;
+  path: string;
+}
 
-const navItems: NavItem[] = [
-  { label: "Dashboard", href: "/dashboard", icon: "ti-layout-dashboard" },
-  { label: "Settings", href: "/settings", icon: "ti-settings" },
+const DEFAULT_ITEMS: SidebarItem[] = [
+  { key: "dashboard", label: "Dashboard", icon: LayoutDashboard, path: "/dashboard" },
+  { key: "my-pias", label: "My PIAs", icon: ClipboardList, path: "/pias" },
+  { key: "compliance", label: "Compliance", icon: ShieldCheck, path: "/compliance" },
+  { key: "risk-register", label: "Risk Register", icon: AlertTriangle, path: "/risk-register" },
+  { key: "reports", label: "Reports", icon: FileBarChart2, path: "/reports" },
+  { key: "vendor-assessments", label: "Vendor Assessments", icon: Building2, path: "/vendors" },
+  { key: "audit-log", label: "Audit Log", icon: ScrollText, path: "/audit-log" },
+  { key: "settings", label: "Settings", icon: Settings, path: "/settings" },
 ];
 
-const Sidebar = () => {
-  const [active, setActive] = useState("/dashboard");
+export interface SidebarProps {
+  items?: SidebarItem[];
+}
 
+export default function Sidebar({ items = DEFAULT_ITEMS }: SidebarProps) {
   return (
-    <aside className="sidebar">
-      <nav className="sidebar-nav">
-        {navItems.map((item) => (
-          <a
-            key={item.href}
-            href={item.href}
-            className={`nav-item ${active === item.href ? "nav-item-active" : ""}`}
-            onClick={(e) => {
-              e.preventDefault();
-              setActive(item.href);
-            }}
-          >
-            <i className={`ti ${item.icon} nav-icon`} aria-hidden="true" />
-            {item.label}
-          </a>
+    <nav className="sidebar" aria-label="Primary">
+      <ul>
+        {items.map(({ key, label, icon: Icon, path }) => (
+          <li key={key}>
+            <NavLink
+              to={path}
+              className={({ isActive }) =>
+                `sidebar__item${isActive ? " is-active" : ""}`
+              }
+            >
+              <Icon size={18} strokeWidth={1.9} />
+              <span>{label}</span>
+            </NavLink>
+          </li>
         ))}
-      </nav>
-    </aside>
+      </ul>
+    </nav>
   );
-};
-
-export default Sidebar;
+}

@@ -1,0 +1,17 @@
+.app-shell {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-body {
+  flex: 1;
+  display: flex;
+  min-height: 0; /* allows children to scroll independently */
+}
+
+.app-main {
+  flex: 1;
+  overflow-y: auto;
+  background: var(--color-bg);
+}

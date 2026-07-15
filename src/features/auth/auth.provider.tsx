@@ -15,6 +15,7 @@ import type {
   AuthState,
   User,
 } from "./auth.types";
+import { useToast } from "@/components/Toast";
 
 // ─────────────────────────────────────────────
 // Initial state
@@ -88,6 +89,8 @@ function mapSupabaseUser(supabaseUser: NonNullable<Awaited<ReturnType<typeof sup
 // ─────────────────────────────────────────────
 
 export function AuthProvider({ children }: AuthProviderProps) {
+  
+  const toast = useToast();
   const [state, dispatch] = useReducer(authReducer, initialState);
 
   // ── Session rehydration + real-time auth state listener ──────────────
@@ -118,6 +121,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
             token: session.access_token,
           },
         });
+        
+        const pendingSignIn = sessionStorage.getItem("auth:pending_signin");
+        if (_event === "SIGNED_IN" && pendingSignIn) {
+          sessionStorage.removeItem("auth:pending_signin");
+          toast.success("Signed in successfully!");
+        }
+
       } else {
         dispatch({ type: "AUTH_LOGOUT" });
       }
@@ -130,6 +140,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const login = useCallback(async (email: string, password: string) => {
     dispatch({ type: "AUTH_INIT" });
+    sessionStorage.setItem("auth:pending_signin", "1");
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) {
       dispatch({ type: "AUTH_FAILURE", payload: error.message });
@@ -139,7 +150,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const logout = useCallback(async () => {
     await supabase.auth.signOut();
-    // onAuthStateChange fires AUTH_LOGOUT automatically
   }, []);
 
   const refreshUser = useCallback(async () => {

@@ -1,18 +1,44 @@
 import { useState, useRef, useEffect } from "react";
-import { Bell, Sun, Moon, LogOut, Settings, User } from "lucide-react";
+import { Bell, Sun, Moon, LogOut, Settings, User, Zap, Loader2 } from "lucide-react";
 import BrandLogo from "@/components/BrandLogo/BrandLogo";
 import "../styles/Topbar.css";
+import { useTheme } from "@/hooks/useTheme";
+import { useAuth } from "@/features/auth";
+
+type Role = "admin" | "editor" | "viewer";
+
+const ROLE_LABEL: Record<Role, string> = {
+  admin: "Admin",
+  editor: "Editor",
+  viewer: "Viewer",
+};
 
 const Topbar = () => {
-  const [theme, setTheme] = useState<"dark" | "light">("dark");
-  const [hasNotif, setHasNotif] = useState(true);
+
+  const [notifCount, setNotifCount] = useState(4);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [loggingOut, setLoggingOut] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
-  const toggleTheme = () => {
-    const next = theme === "dark" ? "light" : "dark";
-    setTheme(next);
-    document.documentElement.setAttribute("data-theme", next === "light" ? "light" : "");
+  const { theme, toggleTheme } = useTheme();
+  const { user, logout } = useAuth();
+  const role: Role = "admin";
+
+  const handlePiaQuickStart = () => {
+    // wire up to your PIA creation flow
+    console.log("Quick-start PIA");
+  };
+
+  const handleLogout = async () => {
+    setLoggingOut(true);
+    try {
+      await logout();
+      // if your app redirects on logout (e.g. via router or auth listener),
+      // this component may unmount before we get here — that's fine.
+    } catch (err) {
+      console.error("Logout failed:", err);
+      setLoggingOut(false); // only reset on failure, so button doesn't flicker back on success
+    }
   };
 
   useEffect(() => {
@@ -31,9 +57,18 @@ const Topbar = () => {
         <BrandLogo />
       </div>
 
-      <div className="topbar-center" />
-
       <div className="topbar-right">
+        {/* QUICK PIA BUTTON */}
+        <button
+          className="topbar-pia-btn"
+          onClick={handlePiaQuickStart}
+          aria-label="Quick-start PIA"
+        >
+          <Zap size={15} />
+          <span>Quick-start PIA</span>
+        </button>
+
+        {/* THEME BUTTON */}
         <button
           className="topbar-btn"
           aria-label="Toggle theme"
@@ -42,15 +77,21 @@ const Topbar = () => {
           {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
         </button>
 
+        {/* NOTIFICATION BUTTON */}
         <button
           className="topbar-btn"
           aria-label="Notifications"
-          onClick={() => setHasNotif(false)}
+          onClick={() => setNotifCount(0)}
         >
           <Bell size={18} />
-          {hasNotif && <span className="notif-dot" />}
+          {notifCount > 0 && (
+            <span className="notif-badge">
+              {notifCount > 99 ? "99+" : notifCount}
+            </span>
+          )}
         </button>
 
+        {/* USER MENU */}
         <div className="topbar-user" ref={menuRef}>
           <button
             className="topbar-avatar"
@@ -58,14 +99,18 @@ const Topbar = () => {
             aria-expanded={menuOpen}
             onClick={() => setMenuOpen((prev) => !prev)}
           >
-            JD
+            <span className="topbar-avatar-initials">JD</span>
+            <span className={`topbar-role-dot topbar-role-dot--${role}`} />
           </button>
 
           {menuOpen && (
             <div className="user-menu">
               <div className="user-menu-header">
-                <span className="user-menu-name">John Doe</span>
+                <span className="user-menu-name">user</span>
                 <span className="user-menu-email">john@example.com</span>
+                <span className={`user-menu-role user-menu-role--${role}`}>
+                  {ROLE_LABEL[role]}
+                </span>
               </div>
 
               <div className="user-menu-divider" />
@@ -81,9 +126,17 @@ const Topbar = () => {
 
               <div className="user-menu-divider" />
 
-              <button className="user-menu-item user-menu-item-danger">
-                <LogOut size={15} />
-                Sign out
+              <button
+                className="user-menu-item user-menu-item-danger"
+                onClick={handleLogout}
+                disabled={loggingOut}
+              >
+                {loggingOut ? (
+                  <Loader2 size={15} className="user-menu-item-spinner" />
+                ) : (
+                  <LogOut size={15} />
+                )}
+                {loggingOut ? "Signing out..." : "Sign out"}
               </button>
             </div>
           )}

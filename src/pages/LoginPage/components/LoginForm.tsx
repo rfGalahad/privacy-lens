@@ -1,19 +1,25 @@
-import GoogleButton from "./GoogleButton";
-
 import FormField from "@/components/FormField";
 import SubmitButton from "@/components/SubmitButton";
-import BrandLogo from "@/components/BrandLogo/BrandLogo";
+import BrandLogo from "@/components/BrandLogo";
+import GoogleButton from "@/components/GoogleButton";
 
 import { useForm } from "@/hooks/useForm";
 import { email, required } from "@/utils/validators";
+import { supabase } from "@/lib/supabaseClient";
+import { useGoogleAuth } from "@/features/auth/hooks/useGoogleAuth";
+import { useToast } from "@/components/Toast";
 
 import "../styles/LoginForm.css";
 
 
-const EMAIL_MAX = 254; 
-const PASSWORD_MAX = 128;
-
 const LoginForm = () => {
+
+  const toast = useToast();
+
+  const {
+    handleGoogleSignIn,
+    isLoading: googleLoading
+  } = useGoogleAuth();
 
   const form = useForm({
     initialValues: { 
@@ -24,7 +30,22 @@ const LoginForm = () => {
       email: [required(), email()],
       password: [required()],
     },
-    // onSubmit: async (values) => {},
+    onSubmit: async (values) => {
+      const { error } = await supabase.auth.signInWithPassword({
+        email: values.email,
+        password: values.password,
+      });
+
+      if (error) {
+      console.error(error.message);
+      toast.error("Failed to sign in. Check your email and password.", {
+        title: "Login Error"
+      });
+      return;
+    }
+
+    toast.success("Signed in successfully!");
+    },
   });
 
   return (
@@ -38,7 +59,11 @@ const LoginForm = () => {
         <p className="subtitle">Sign in to continue your journey.</p>
 
         {/* Google OAuth */}
-        <GoogleButton />
+        <GoogleButton
+          label="Continue with Google"
+          isLoading={googleLoading} 
+          onClick={handleGoogleSignIn}
+        />
 
         {/* Divider */}
         <div className="divider" role="separator">
@@ -58,7 +83,6 @@ const LoginForm = () => {
               autoComplete="email"
               placeholder="you@example.com"
               value={form.values.email}
-              maxLength={EMAIL_MAX}
               onChange={form.handleChange}
               required
               error={form.touched.email ? form.errors.email : undefined}
@@ -73,7 +97,6 @@ const LoginForm = () => {
               autoComplete="current-password"
               placeholder="••••••••"
               value={form.values.password}
-              maxLength={PASSWORD_MAX}
               onChange={form.handleChange}
               error={form.touched.password ? form.errors.password : undefined}
               required
@@ -85,7 +108,10 @@ const LoginForm = () => {
             />
           </fieldset>
 
-          <SubmitButton isLoading={form.isSubmitting} label="Sign In" />
+          <SubmitButton 
+            isLoading={form.isSubmitting} 
+            label="Sign In"
+          />
         </form>
 
         {/* Register Prompt */}

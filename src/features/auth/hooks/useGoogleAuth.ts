@@ -10,9 +10,7 @@ interface UseGoogleAuthOptions {
 }
 
 export function useGoogleAuth({
-  redirectTo = "/dashboard",
-  onSuccess,
-  onError,
+  redirectTo = "/dashboard"
 }: UseGoogleAuthOptions = {}) {
 
   const [status, setStatus] = useState<AuthStatus>("idle");
@@ -21,7 +19,8 @@ export function useGoogleAuth({
   const handleGoogleSignIn = useCallback(async () => {
     setStatus("loading");
     setErrorMsg(null);
-
+    sessionStorage.setItem("auth:pending_signin", "1");
+    
     try {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
@@ -33,10 +32,10 @@ export function useGoogleAuth({
           },
         },
       });
+      
       if (error) throw error;
       
       setStatus("success");
-      onSuccess?.();
     } catch (err) {
       const error = err instanceof Error
         ? err
@@ -45,9 +44,8 @@ export function useGoogleAuth({
       console.error("[useGoogleAuth]", error);
       setStatus("error");
       setErrorMsg(error.message);
-      onError?.(error);
     }
-  }, [redirectTo, onSuccess, onError]);
+  }, [redirectTo]);
 
   return {
     handleGoogleSignIn,
