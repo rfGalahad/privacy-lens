@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+
 import FormField from "@/components/FormField";
 import SubmitButton from "@/components/SubmitButton";
 import BrandLogo from "@/components/BrandLogo";
@@ -14,6 +16,7 @@ import "../styles/LoginForm.css";
 
 const LoginForm = () => {
 
+  const navigate = useNavigate();
   const toast = useToast();
 
   const {
@@ -37,14 +40,14 @@ const LoginForm = () => {
       });
 
       if (error) {
-      console.error(error.message);
-      toast.error("Failed to sign in. Check your email and password.", {
-        title: "Login Error"
-      });
-      return;
-    }
+        console.error(error.message);
+        toast.error("Failed to sign in. Check your email and password.", {
+          title: "Login Error"
+        });
+        return;
+      }
 
-    toast.success("Signed in successfully!");
+      navigate("/dashboard");
     },
   });
 

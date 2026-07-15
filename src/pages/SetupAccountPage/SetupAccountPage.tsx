@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { LogIn } from "lucide-react";
 
 import ValidationRules from "./components/ValidationRules";
@@ -34,6 +35,7 @@ const PageWrapper = ({ children }: { children: React.ReactNode }) => (
 
 export default function SetupAccountPage() {
 
+  const navigate = useNavigate();
   const status = useSessionGuard();
 
   const form = useForm({
@@ -53,7 +55,7 @@ export default function SetupAccountPage() {
         form.setError("newPassword", error.message);
         return;
       }
-      // router.push("/dashboard");
+      navigate("/dashboard");
     },
   });
 
