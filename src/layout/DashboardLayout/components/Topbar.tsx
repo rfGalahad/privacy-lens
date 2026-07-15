@@ -21,7 +21,7 @@ const Topbar = () => {
   const menuRef = useRef<HTMLDivElement>(null);
 
   const { theme, toggleTheme } = useTheme();
-  const { user, logout } = useAuth();
+  const { logout } = useAuth();
   const role: Role = "admin";
 
   const handlePiaQuickStart = () => {
