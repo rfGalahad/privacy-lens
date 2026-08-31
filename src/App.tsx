@@ -1,13 +1,16 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Routes, Route, Navigate, Outlet } from 'react-router-dom';
 
-import LoginPage from '@/pages/LoginPage';
-import SetupAccountPage from '@/pages/SetupAccountPage';
-import DashboardLayout from '@/layout/DashboardLayout';
-import LoadingPage from './components/LoadingPage';
+import { LoginPage, SetupAccountPage, AuthProvider, useAuth } from '@/features/auth';
+import { ToastProvider } from '@/components/ui/Toast';
+import { SubscribePage } from '@/features/subscribe';
+import { ThemeProvider } from '@/provider/theme/ThemeProvider';
 
-import { useAuth } from '@/features/auth/hooks/useAuth';
-import { AuthProvider } from '@/features/auth';
-import { ToastProvider } from '@/components/Toast';
+import DashboardLayout from '@/components/layout/DashboardLayout';
+import LoadingPage from '@/components/feedback/LoadingPage';
+import EmptyPage from '@/components/feedback/EmptyPage';
+
+
 
 function ProtectedRoute() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -17,24 +20,51 @@ function ProtectedRoute() {
     : <Navigate to="/login" replace />;
 }
 
+const queryClient = new QueryClient();
+
 export default function App() {
   return (
-    <ToastProvider>
-      <AuthProvider>
-        <Routes>
-          <Route path="/dash" element={<DashboardLayout />} />
-          {/* Public Routes */}
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/setup-account" element={<SetupAccountPage />} />
-          
-          {/* Protected Routes */}
-          <Route element={<ProtectedRoute />}>
-            <Route path="/dashboard/*" element={<DashboardLayout />} />
-          </Route>
+      <ToastProvider>
+        <AuthProvider>
+          <QueryClientProvider client={queryClient}>
+            <ThemeProvider>
+              <Routes>
+                {/* Public Routes */}
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/setup-account" element={<SetupAccountPage />} />
+                <Route path="/subscribe" element={<SubscribePage />} />
+                
+                {/* Protected Routes */}
+                <Route element={<ProtectedRoute />}>
+                  <Route path="/users" element={<DashboardLayout />}>
+                    <Route path='dashboard' element={<EmptyPage />} />
+                      <Route path='pias/new' element={<EmptyPage />} />
+                      <Route path='pias' element={<EmptyPage />} />
+                      <Route path='action-items' element={<EmptyPage />} />
+                      <Route path='compliance' element={<EmptyPage />} />
+                      <Route path='risk-register' element={<EmptyPage />} />
+                      <Route path='reports' element={<EmptyPage />} />
+                      <Route path='vendors' element={<EmptyPage />} />
+                      <Route path='activity' element={<EmptyPage />} />
+                      <Route path='settings' element={<EmptyPage />} />
+                  </Route>
+                  <Route path="/admin" element={<DashboardLayout />}>
+                    <Route path='dashboard' element={<EmptyPage />} />
+                      <Route path='users' element={<EmptyPage />} />
+                      <Route path='config' element={<EmptyPage />} />
+                      <Route path='tenants' element={<EmptyPage />} />
+                      <Route path='integrations' element={<EmptyPage />} />
+                      <Route path='audit-log' element={<EmptyPage />} />
+                      <Route path='system-health' element={<EmptyPage />} />
+                      <Route path='settings' element={<EmptyPage />} />
+                  </Route>
+                </Route>
 
-          <Route path="*" element={<Navigate to="/login" />} />
-        </Routes>
-      </AuthProvider>
-    </ToastProvider>
+                <Route path="*" element={<EmptyPage/>} />
+              </Routes>
+            </ThemeProvider>
+          </QueryClientProvider>
+        </AuthProvider>
+      </ToastProvider>
   );
 }

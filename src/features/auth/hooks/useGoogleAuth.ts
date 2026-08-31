@@ -1,5 +1,9 @@
 import { useState, useCallback } from "react";
-import { supabase } from "@/lib/supabaseClient";
+import { supabase } from "@/lib/supabase/client";
+
+//-----------------------------------------------------------
+// TYPES
+//-----------------------------------------------------------
 
 type AuthStatus = "idle" | "loading" | "success" | "error";
 
@@ -9,8 +13,12 @@ interface UseGoogleAuthOptions {
   onError?: (error: Error) => void; 
 }
 
+//-----------------------------------------------------------
+// GOOGLE AUTH HOOK
+//-----------------------------------------------------------
+
 export function useGoogleAuth({
-  redirectTo = "/dashboard"
+  redirectTo = "/"
 }: UseGoogleAuthOptions = {}) {
 
   const [status, setStatus] = useState<AuthStatus>("idle");
