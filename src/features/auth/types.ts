@@ -2,13 +2,14 @@
 // Domain types
 // ─────────────────────────────────────────────
 
-export type UserRole = "admin" | "subscriber" | "unknown";
+export type UserRole = "admin" | "subscriber" | "unknown" | "error";
 
 export interface User {
   id: string;
   email: string;
   name?: string;
-  role?: UserRole;
+  roles: UserRole[];
+  activeRole: UserRole;
   avatarUrl?: string;
 }
 
@@ -32,6 +33,7 @@ export type AuthAction =
   | { type: "AUTH_SUCCESS"; payload: { user: User; token: string } }
   | { type: "AUTH_FAILURE"; payload: string }
   | { type: "AUTH_LOGOUT" }
+  | { type: "SWITCH_ROLE"; payload: { activeRole: UserRole } }
   | { type: "REFRESH_USER"; payload: User }
   | { type: "CLEAR_ERROR" };
 
@@ -74,4 +76,5 @@ export interface AuthContextValue extends AuthState {
   logout: () => void;
   refreshUser: () => Promise<void>;
   clearError: () => void;
+  switchRole: (role: UserRole) => void;
 }

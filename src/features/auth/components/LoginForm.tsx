@@ -17,17 +17,19 @@ const LoginForm = () => {
 
   return (
     <section className="flex items-center px-6 py-12 justify-center bg-surface">
-      <div className="w-full max-w-105 animate-[fadeIn_0.7s_ease_both]">
+      <div className="flex flex-col gap-4 w-full max-w-105 animate-[fadeIn_0.7s_ease_both]">
         {/* Brand */}
         <BrandLogo />
 
         {/* Title and Subtitle  */}
-        <h1 className="font-bold text-[clamp(1.8rem,3vw,1rem)] leading-[1.15] text-text-primary mb-(--space-1) mt-(--space-6)">
-          Welcome back, Guardian!
-        </h1>
-        <p className="text-[0.95rem] text-text-secondary mb-(--space-5)">
-          Sign in to continue your journey.
-        </p>
+        <div>
+          <h1 className="font-bold text-[clamp(1.8rem,3vw,1rem)] leading-[1.15] text-text-primary mb-(--space-1) mt-(--space-6)">
+            Welcome back, Guardian!
+          </h1>
+          <p className="text-[0.95rem] text-text-secondary mb-(--space-5)">
+            Sign in to continue your journey.
+          </p>
+        </div>
 
         {/* Google OAuth */}
         <GoogleButton
@@ -36,7 +38,7 @@ const LoginForm = () => {
           onClick={handleGoogleSignIn}
         />
 
-        {/* Divider */}
+        {/* DIVIDER */}
         <div
           className="flex items-center gap-(--space-2) my-(--space-5) text-[0.78rem] tracking-wider uppercase text-text-muted
                     before:content-[''] before:flex-1 before:h-px before:bg-border
@@ -48,7 +50,7 @@ const LoginForm = () => {
           </span>
         </div>
 
-        {/* Form */}
+        {/* FORM */}
         <form
           className="flex flex-col gap-(--space-6)"
           onSubmit={(e) => {
@@ -58,7 +60,7 @@ const LoginForm = () => {
           }}
           noValidate
         >
-          <fieldset className="flex flex-col gap-(--space-4) border-none">
+          <fieldset className="flex flex-col gap-4 border-none">
             <legend className="sr-only">Login credentials</legend>
 
             <form.AppField name="email">
@@ -100,12 +102,13 @@ const LoginForm = () => {
                 label="Sign In"
                 loading={isSubmitting || signInMutation.isPending}
                 disabled={!canSubmit}
+                className="mt-6"
               />
             )}
           </form.Subscribe>
         </form>
 
-        {/* Register Prompt */}
+        {/* REGISTER PROMPT */}
         <p className="mt-(--space-4) text-center text-[0.88rem] text-text-muted">
           Don't have an account?{" "}
           <a

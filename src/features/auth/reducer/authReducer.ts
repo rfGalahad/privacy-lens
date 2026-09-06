@@ -39,6 +39,13 @@ export function authReducer(
         token: null,
         error: action.payload,
       };
+    
+    case "SWITCH_ROLE":
+      if (!state.user) return state;
+      return {
+        ...state,
+        user: { ...state.user, activeRole: action.payload.activeRole },
+      };
 
     case "AUTH_LOGOUT":
       return { ...initialState, isLoading: false };

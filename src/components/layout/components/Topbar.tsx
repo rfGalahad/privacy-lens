@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Bell, Sun, Moon, LogOut, Settings, User, Zap, Loader2 } from "lucide-react";
+import { Bell, Sun, Moon, LogOut, Settings, User, Zap, Loader2, ArrowLeftRight } from "lucide-react";
 
 import type { UserRole } from "@/features/auth/types";
 import { getInitials } from "@/utils/string";
@@ -19,18 +19,26 @@ const ROLE_LABEL: Record<UserRole, string> = {
   admin: "Admin",
   subscriber: "Subscriber",
   unknown: "Unknown",
+  error: "Error",
 };
 
 const ROLE_DOT_COLOR: Record<UserRole, string> = {
   admin: "bg-[#f76f19]",
   subscriber: "bg-[#4f9dff]",
   unknown: "bg-[#8a8a8a]",
+  error: "bg-[#f76f6f]",
 };
 
 const ROLE_BADGE_COLOR: Record<UserRole, string> = {
   admin: "bg-[#f76f19]/15 text-[#f76f19]",
   subscriber: "bg-[#4f9dff]/15 text-[#4f9dff]",
   unknown: "bg-[#8a8a8a]/15 text-[#8a8a8a]",
+  error: "bg-[#f76f6f]/15 text-[#f76f6f]",
+};
+
+const OTHER_ROLE: Partial<Record<UserRole, UserRole>> = {
+  admin: "subscriber",
+  subscriber: "admin",
 };
 
 //-----------------------------------------------------------
@@ -45,7 +53,10 @@ const Topbar = () => {
   const menuRef = useRef<HTMLDivElement>(null);
 
   const { theme, toggleTheme } = useTheme();
-  const { user, logout } = useAuth();
+  const { user, logout, switchRole } = useAuth();
+
+  const canSwitchRole = (user?.roles.length ?? 0) > 1;
+  const nextRole = user ? OTHER_ROLE[user.activeRole] : undefined;
 
   const handlePiaQuickStart = () => {
     console.log("Quick-start PIA");
@@ -59,6 +70,12 @@ const Topbar = () => {
       console.error("Logout failed:", err);
       setLoggingOut(false);
     }
+  };
+
+  const handleChangeView = () => {
+    if (!nextRole) return;
+    setMenuOpen(false);
+    switchRole(nextRole);
   };
 
   useEffect(() => {
@@ -86,7 +103,7 @@ const Topbar = () => {
 
       <div className="flex items-center gap-3 min-w-30 justify-end">
         {/* QUICK PIA BUTTON */}
-        {user?.role === "subscriber" && (
+        {user?.activeRole === "subscriber" && (
           <Button
             label="Quick-start PIA"
             variant="outlined"
@@ -97,7 +114,7 @@ const Topbar = () => {
             className="in-data-[theme=light]:border-border in-data-[theme=light]:hover:bg-surface-2"
           />
         )}
-        
+
         <IconButton
           icon={theme === "dark" ? Sun : Moon}
           label="Toggle theme"
@@ -134,7 +151,7 @@ const Topbar = () => {
               className={`
                 absolute -bottom-px -right-px w-2.5 h-2.5
                 rounded-full border-[1.5px] border-surface
-                ${ROLE_DOT_COLOR[user?.role ?? "unknown"]}
+                ${ROLE_DOT_COLOR[user?.activeRole ?? "unknown"]}
               `}
             />
           </button>
@@ -143,7 +160,7 @@ const Topbar = () => {
             <div
               className="
                 absolute top-[calc(100%+8px)] right-0
-                min-w-50 bg-surface border border-border
+                min-w-60 bg-surface border border-border
                 rounded-md shadow-[0_8px_24px_rgba(0,0,0,0.24)]
                 p-2 z-50
               "
@@ -159,10 +176,10 @@ const Topbar = () => {
                   className={`
                     self-start mt-1 px-1.75 py-px rounded-full
                     text-[10px] font-bold uppercase tracking-[0.02em]
-                    ${ROLE_BADGE_COLOR[user?.role ?? "unknown"]}
+                    ${ROLE_BADGE_COLOR[user?.activeRole ?? "unknown"]}
                   `}
                 >
-                  {ROLE_LABEL[user?.role ?? "unknown"]}
+                  {ROLE_LABEL[user?.activeRole ?? "unknown"]}
                 </span>
               </div>
 
@@ -192,6 +209,23 @@ const Topbar = () => {
                 <Settings size={15} />
                 Settings
               </button>
+
+              {/* CHANGE VIEW — only shown when the user actually holds more than one role */}
+              {canSwitchRole && nextRole && (
+                <button
+                  onClick={handleChangeView}
+                  className="
+                    flex items-center gap-2 w-full px-3 py-2
+                    bg-transparent border-none rounded-sm
+                    font-body text-[13px] text-text-secondary
+                    cursor-pointer transition
+                    hover:bg-surface-2 hover:text-text-primary
+                  "
+                >
+                  <ArrowLeftRight size={15} />
+                  Switch to {ROLE_LABEL[nextRole]} view
+                </button>
+              )}
 
               <div className="h-px bg-border my-2" />
 

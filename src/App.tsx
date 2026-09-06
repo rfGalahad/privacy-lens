@@ -2,6 +2,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Routes, Route, Navigate, Outlet } from 'react-router-dom';
 
 import { LoginPage, SetupAccountPage, AuthProvider, useAuth } from '@/features/auth';
+import { QuickStartPIAPage } from './features/automatedPIA';
+
 import { ToastProvider } from '@/components/ui/Toast';
 import { SubscribePage } from '@/features/subscribe';
 import { ThemeProvider } from '@/provider/theme/ThemeProvider';
@@ -33,12 +35,13 @@ export default function App() {
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/setup-account" element={<SetupAccountPage />} />
                 <Route path="/subscribe" element={<SubscribePage />} />
-                
+                <Route path="/auth/error" element={<SubscribePage />} /> // FIX THESE
+
                 {/* Protected Routes */}
                 <Route element={<ProtectedRoute />}>
                   <Route path="/users" element={<DashboardLayout />}>
                     <Route path='dashboard' element={<EmptyPage />} />
-                      <Route path='pias/new' element={<EmptyPage />} />
+                      <Route path='pias/new' element={<QuickStartPIAPage />} />
                       <Route path='pias' element={<EmptyPage />} />
                       <Route path='action-items' element={<EmptyPage />} />
                       <Route path='compliance' element={<EmptyPage />} />
@@ -50,7 +53,7 @@ export default function App() {
                   </Route>
                   <Route path="/admin" element={<DashboardLayout />}>
                     <Route path='dashboard' element={<EmptyPage />} />
-                      <Route path='users' element={<EmptyPage />} />
+                      <Route path='users-roles' element={<EmptyPage />} />
                       <Route path='config' element={<EmptyPage />} />
                       <Route path='tenants' element={<EmptyPage />} />
                       <Route path='integrations' element={<EmptyPage />} />

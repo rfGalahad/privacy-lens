@@ -39,13 +39,13 @@ const getErrorMessage = (errors: unknown[]): string | undefined => {
 };
 
 //-----------------------------------------------------------
-// SHARED STYLES
+// SHARED STYLES (aligned with TextField's inputBase)
 //-----------------------------------------------------------
 
 const triggerBase =
   'w-full px-4 py-3 flex items-center justify-between gap-2 ' +
-  'bg-(--color-field-bg) ' +
-  'border border-(--color-field-border) rounded-[var(--radius-sm)] ' +
+  'bg-(--color-surface-2) ' +
+  'border border-(--color-border) rounded-[var(--radius-sm)] ' +
   'text-[0.95rem] font-[var(--font-body)] ' +
   'outline-none text-left ' +
   'transition-[border-color,box-shadow,background-color] duration-[var(--transition)] ' +
@@ -225,7 +225,7 @@ const ComboBox = ({
             onKeyDown={handleInputKeyDown}
             placeholder={placeholder}
             autoComplete="off"
-            className="w-full bg-transparent outline-none truncate text-field-text placeholder:text-field-placeholder disabled:cursor-not-allowed"
+            className="w-full bg-transparent outline-none truncate text-(--color-field-text) placeholder:text-(--color-text-muted) disabled:cursor-not-allowed"
             role="combobox"
             aria-haspopup="listbox"
             aria-expanded={open}
@@ -268,7 +268,7 @@ const ComboBox = ({
             aria-labelledby={id}
             className={
               'absolute z-20 mt-1.5 max-h-60 w-full overflow-y-auto ' +
-              'bg-field-bg border border-field-border rounded-sm ' +
+              'bg-(--color-surface-2) border border-(--color-border) rounded-[var(--radius-sm)] ' +
               'shadow-lg py-1'
             }
           >
@@ -292,8 +292,8 @@ const ComboBox = ({
                   onClick={() => selectOption(option)}
                   className={[
                     'flex items-center justify-between gap-2 px-4 py-2.5 text-[0.9rem] cursor-pointer',
-                    isHighlighted ? 'bg-field-text/10' : '',
-                    isSelected ? 'text-field-text font-medium' : 'text-text-secondary',
+                    isHighlighted ? 'bg-(--color-field-text)/10' : '',
+                    isSelected ? 'text-(--color-field-text) font-medium' : 'text-text-secondary',
                   ]
                     .filter(Boolean)
                     .join(' ')}

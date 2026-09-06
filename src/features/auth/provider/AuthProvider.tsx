@@ -10,6 +10,7 @@ import {
 import { AuthContext } from "../context/authContext";
 import { authReducer, initialState } from "../reducer/authReducer";
 import { useAuthSession } from "../hooks/useAuthSession";
+import { useSwitchRole } from "../hooks/useSwitchRole";
 import type { AuthContextValue, AuthProviderProps } from "../types";
 import { useNavigate } from "react-router-dom";
 
@@ -21,6 +22,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [state, dispatch] = useReducer(authReducer, initialState);
 
   useAuthSession(dispatch);
+  const switchRole = useSwitchRole(state.user, dispatch);
 
   const login = useCallback(async (email: string, password: string) => {
     dispatch({ type: "AUTH_INIT" });
@@ -68,9 +70,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
       logout,
       refreshUser,
       clearError,
+      switchRole,
     }),
-    [state, login, logout, refreshUser, clearError]
+    [state, login, logout, refreshUser, clearError, switchRole]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
-} 
+}

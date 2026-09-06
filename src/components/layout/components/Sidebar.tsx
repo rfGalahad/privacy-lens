@@ -58,7 +58,7 @@ const USER_ITEMS: SidebarItem[] = [
 // 5.1 Admin Panel
 const ADMIN_ITEMS: SidebarItem[] = [
   { key: "admin-dashboard", label: "Dashboard", icon: LayoutDashboard, path: "/admin/dashboard" },
-  { key: "user-management", label: "Users & Roles", icon: Users, path: "/admin/users" },
+  { key: "user-management", label: "Users & Roles", icon: Users, path: "/admin/users-roles" },
   { key: "system-config", label: "System Configuration", icon: SlidersHorizontal, path: "/admin/config" },
   { key: "tenant-management", label: "Tenant Management", icon: Building2, path: "/admin/tenants" },
   { key: "integrations", label: "Integrations", icon: Plug, path: "/admin/integrations" },
@@ -70,7 +70,8 @@ const ADMIN_ITEMS: SidebarItem[] = [
 const ITEMS_BY_ROLE: Record<UserRole, SidebarItem[]> = {
   admin: ADMIN_ITEMS,
   subscriber: USER_ITEMS,
-  unknown: []
+  unknown: [],
+  error: [],
 };
 
 //-----------------------------------------------------------
@@ -83,7 +84,7 @@ export default function Sidebar({
 }: SidebarProps) {
 
   const { user } = useAuth();
-  const resolvedItems = items ?? ITEMS_BY_ROLE[user?.role ?? "subscriber"];
+  const resolvedItems = items ?? ITEMS_BY_ROLE[user?.activeRole ?? "unknown"];
 
   return (
     <nav
@@ -100,7 +101,7 @@ export default function Sidebar({
       <ul className="list-none flex flex-col gap-1">
         {resolvedItems.map(({ key, label, icon: Icon, path }) => (
           <li key={key}>
-            <NavLink to={path}>
+            <NavLink to={path} end>
               {({ isActive }) => (
                 <div
                   className={`

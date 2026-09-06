@@ -1,10 +1,9 @@
 import type { z } from "zod";
 import { useMutation } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
 
 import { useAppForm } from "@/lib/form";
 import { useToast } from "@/components/ui/Toast";
-import { getCurrentUser, signInWithPassword } from "@/lib/supabase/auth";
+import { signInWithPassword } from "@/lib/supabase/auth";
 
 import { loginSchema } from "../schema/loginSchema";
 
@@ -24,19 +23,16 @@ const DEFAULT_VALUES = {
 
 export function useLogin() {
 
-  const navigate = useNavigate();
   const toast = useToast();
   
   const signInMutation = useMutation({
     mutationFn: async ({ email, password }: z.infer<typeof loginSchema>) => {
       await signInWithPassword(email, password)
-      return getCurrentUser();
     },
-    onSuccess: (user) => {
+    onSuccess: () => {
       toast.success("Successfully logged in", {
         title: "Welcome back",
       });
-      navigate(user.role === "admin" ? "/admin/dashboard" : "/users/dashboard");
     },
     onError: (error) => {
       console.error(error.message);

@@ -6,57 +6,59 @@ import {
   getSession,
   onAuthStateChange,
   mapSupabaseUser,
-  resolveUserRole,
+  resolveUserRoles,
+  ROLE_ROUTES,
+  resolveActiveRole,
 } from "@/lib/supabase/auth";
 
 import type { AuthAction } from "../types";
 import { useNavigate } from "react-router-dom";
-  
+
 //-----------------------------------------------------------
 // AUTH SESSION HOOK
 //-----------------------------------------------------------
 
 export function useAuthSession(dispatch: Dispatch<AuthAction>) {
-
   const navigate = useNavigate();
 
   useEffect(() => {
     let cancelled = false;
 
-    async function handleSession(session: Session | null) {
-      if (!session) {
-        dispatch({ type: "AUTH_LOGOUT" });
-        return;
-      }
+    async function handleSession(session: Session | null, shouldRedirect: boolean) {
+      try {
+        if (!session) {
+          dispatch({ type: "AUTH_LOGOUT" });
+          return;
+        }
 
-      const resolved = await resolveUserRole(session.user.id);
+        const resolved = await resolveUserRoles(session.user.id);
+        if (cancelled) return;
 
-      if (cancelled) return;
+        const activeRole = resolveActiveRole(resolved.roles);
+        const user = mapSupabaseUser(session.user, resolved, activeRole);
 
-      if (resolved.role === "unknown") {
         dispatch({
           type: "AUTH_SUCCESS",
-          payload: { user: mapSupabaseUser(session.user, resolved), token: session.access_token },
+          payload: { user, token: session.access_token },
         });
-        navigate("/subscribe");
-        return;
-      }
 
-      dispatch({
-        type: "AUTH_SUCCESS",
-        payload: {
-          user: mapSupabaseUser(session.user, resolved),
-          token: session.access_token,
-        },
-      });
+        // if (shouldRedirect) {
+        //   navigate(ROLE_ROUTES[activeRole]);
+        // }
+      } catch (err) {
+        if (cancelled) return;
+        console.error("useAuthSession: failed to resolve session:", err);
+        dispatch({ type: "AUTH_LOGOUT" });
+        navigate(ROLE_ROUTES.error);
+      }
     }
 
     getSession()
-      .then(handleSession)
+      .then((session) => handleSession(session, false))
       .catch(() => dispatch({ type: "AUTH_LOGOUT" }));
 
-    const { data: { subscription } } = onAuthStateChange((_event, session) => {
-      handleSession(session);
+    const { data: { subscription } } = onAuthStateChange((event, session) => {
+      handleSession(session, event === "SIGNED_IN");
     });
 
     return () => {
