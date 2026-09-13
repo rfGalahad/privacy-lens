@@ -11,11 +11,11 @@ export const dataFlowStorageSchema = z.object({
     .array(z.enum(['on_premise', 'cloud', 'third_party', 'others', 'na']))
     .min(1, 'Please select at least one option'),
 
-  storageLocationOtherSpecify: z.string().optional().or(z.literal('')),
+  storageLocationOtherSpecify: z.string(),
 
   isTransferredToThirdParties: yesNoNaSchema,
 
-  transferDetails: z.string().optional().or(z.literal('')),
+  transferDetails: z.string(),
 })
 
 export type DataFlowStorageValues = z.infer<typeof dataFlowStorageSchema>

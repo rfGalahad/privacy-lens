@@ -102,9 +102,8 @@ export const PersonalDataCollected = withForm({
           >
             {(field) => (
               <field.RadioGroup
-                label="Are minors' data involved?"
+                legend="Are minors' data involved?"
                 options={YES_NO_NA_OPTIONS}
-                required
               />
             )}
           </form.AppField>

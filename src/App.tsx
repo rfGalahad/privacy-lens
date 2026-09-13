@@ -35,7 +35,7 @@ export default function App() {
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/setup-account" element={<SetupAccountPage />} />
                 <Route path="/subscribe" element={<SubscribePage />} />
-                <Route path="/auth/error" element={<SubscribePage />} /> // FIX THESE
+                <Route path="/auth/error" element={<SubscribePage />} /> {/* FIX THESE */}
 
                 {/* Protected Routes */}
                 <Route element={<ProtectedRoute />}>
@@ -63,7 +63,7 @@ export default function App() {
                   </Route>
                 </Route>
 
-                <Route path="*" element={<EmptyPage/>} />
+                <Route path="*" element={<Navigate to="/login" replace />} />
               </Routes>
             </ThemeProvider>
           </QueryClientProvider>

@@ -86,9 +86,8 @@ export const PrivacyRisks = withForm({
             >
               {(field) => (
                 <field.RadioGroup
-                  label="Likelihood"
+                  legend="Likelihood"
                   options={LOW_MEDIUM_HIGH_NA_OPTIONS}
-                  required
                 />
               )}
             </form.AppField>
@@ -101,9 +100,8 @@ export const PrivacyRisks = withForm({
             >
               {(field) => (
                 <field.RadioGroup
-                  label="Impact"
+                  legend="Impact"
                   options={LOW_MEDIUM_HIGH_NA_OPTIONS}
-                  required
                 />
               )}
             </form.AppField>

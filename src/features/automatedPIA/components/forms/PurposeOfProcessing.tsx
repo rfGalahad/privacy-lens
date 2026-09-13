@@ -85,9 +85,8 @@ export const PurposeOfProcessing = withForm({
           >
             {(field) => (
               <field.RadioGroup
-                label="Is the purpose clearly defined and documented?"
+                legend="Is the purpose clearly defined and documented?"
                 options={YES_NO_NA_OPTIONS}
-                required
               />
             )}
           </form.AppField>

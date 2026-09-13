@@ -67,9 +67,8 @@ export const DataSharing = withForm({
           >
             {(field) => (
               <field.RadioGroup
-                label="Is personal data shared with third parties?"
+                legend="Is personal data shared with third parties?"
                 options={YES_NO_NA_OPTIONS}
-                required
               />
             )}
           </form.AppField>
@@ -99,9 +98,8 @@ export const DataSharing = withForm({
           >
             {(field) => (
               <field.RadioGroup
-                label="Is there a data sharing or processing agreement in place with third parties?"
+                legend="Is there a data sharing or processing agreement in place with third parties?"
                 options={YES_NO_NA_OPTIONS}
-                required
               />
             )}
           </form.AppField>

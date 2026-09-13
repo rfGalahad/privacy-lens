@@ -17,7 +17,7 @@ export const LoginPage = () => {
 
   useEffect(() => {
     if (isLoading || !isAuthenticated || !user) return;
-    navigate(user.role === "admin" ? "/admin/dashboard" : "/users/dashboard", {
+    navigate(user.roles.includes("admin") ? "/admin/dashboard" : "/users/dashboard", {
       replace: true,
     });
   }, [isLoading, isAuthenticated, user, navigate]);

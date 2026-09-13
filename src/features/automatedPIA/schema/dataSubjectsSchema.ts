@@ -7,7 +7,7 @@ export const dataSubjectsSchema = z.object({
     )
     .min(1, 'Please select at least one option'),
 
-  dataSubjectsOtherSpecify: z.string().optional().or(z.literal('')),
+  dataSubjectsOtherSpecify: z.string(),
 })
 
 export type DataSubjectsValues = z.infer<typeof dataSubjectsSchema>

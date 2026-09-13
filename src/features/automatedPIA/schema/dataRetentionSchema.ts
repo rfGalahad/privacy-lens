@@ -10,7 +10,7 @@ export const dataRetentionSchema = z.object({
     .array(z.enum(['secure_deletion', 'anonymization', 'physical_destruction', 'others', 'na']))
     .min(1, 'Please select at least one option'),
 
-  disposalOtherSpecify: z.string().optional().or(z.literal('')),
+  disposalOtherSpecify: z.string(),
 })
 
 export type DataRetentionValues = z.infer<typeof dataRetentionSchema>

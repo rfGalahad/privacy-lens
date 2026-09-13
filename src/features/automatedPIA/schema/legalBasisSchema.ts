@@ -15,7 +15,7 @@ export const legalBasisSchema = z.object({
     )
     .min(1, 'Please select at least one option'),
 
-  legalBasisOtherSpecify: z.string().optional().or(z.literal('')),
+  legalBasisOtherSpecify: z.string(),
 })
 
 export type LegalBasisValues = z.infer<typeof legalBasisSchema>

@@ -3,7 +3,7 @@ import { yesNoNaSchema } from './sharedEnums'
 
 export const dataSharingSchema = z.object({
   isDataShared: yesNoNaSchema,
-  thirdPartyRecipients: z.string().optional().or(z.literal('')),
+  thirdPartyRecipients: z.string(),
   hasSharingAgreement: yesNoNaSchema,
 })
 

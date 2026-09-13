@@ -28,8 +28,6 @@ const piaFormObjectSchema = z.object({
   ...approvalSignOffSchema.shape,
 })
 
-// Final safety net for the "if yes / if others, specify" fields, enforced on full submit.
-// The step components already give live feedback for these via field-level validators.
 export const piaFormSchema = piaFormObjectSchema.superRefine((data, ctx) => {
   const requireSpecify = (
     condition: boolean,

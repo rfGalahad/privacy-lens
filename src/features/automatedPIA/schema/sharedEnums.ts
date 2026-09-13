@@ -1,12 +1,12 @@
 import { z } from 'zod'
 
 export const yesNoNaSchema = z.enum(['yes', 'no', 'na'], {
-  required_error: 'Please select an option',
+  error: 'Please select an option',
 })
 export type YesNoNa = z.infer<typeof yesNoNaSchema>
 
 export const lowMediumHighNaSchema = z.enum(['low', 'medium', 'high', 'na'], {
-  required_error: 'Please select an option',
+  error: 'Please select an option',
 })
 export type LowMediumHighNa = z.infer<typeof lowMediumHighNaSchema>
 

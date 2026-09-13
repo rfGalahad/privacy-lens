@@ -1,15 +1,18 @@
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Bell, Sun, Moon, LogOut, Settings, User, Zap, Loader2, ArrowLeftRight } from "lucide-react";
+
+import BrandLogo from "@/components/common/BrandLogo";
+import Button from "@/components/ui/Button";
+import IconButton from "@/components/ui/IconButton";
 
 import type { UserRole } from "@/features/auth/types";
 import { getInitials } from "@/utils/string";
 import { useTheme } from "@/hooks/useTheme";
 import { useAuth } from "@/features/auth";
 
-import BrandLogo from "@/components/common/BrandLogo";
-import Button from "@/components/ui/Button";
-import IconButton from "@/components/ui/IconButton";
-
+import { useNotificationsMenu } from "../hooks/useNotificationsMenu";
+import { useUserMenu } from "../hooks/useUserMenu";
 
 //-----------------------------------------------------------
 // CONSTANTS
@@ -46,20 +49,23 @@ const OTHER_ROLE: Partial<Record<UserRole, UserRole>> = {
 //-----------------------------------------------------------
 
 const Topbar = () => {
-
-  const [notifCount, setNotifCount] = useState(4);
-  const [menuOpen, setMenuOpen] = useState(false);
+  
   const [loggingOut, setLoggingOut] = useState(false);
-  const menuRef = useRef<HTMLDivElement>(null);
 
   const { theme, toggleTheme } = useTheme();
   const { user, logout, switchRole } = useAuth();
+  const navigate = useNavigate();
 
   const canSwitchRole = (user?.roles.length ?? 0) > 1;
   const nextRole = user ? OTHER_ROLE[user.activeRole] : undefined;
 
+  const notifMenu = useNotificationsMenu(user?.id);
+  const userMenu = useUserMenu();
+  const { menuRef: notifMenuRef } = notifMenu;
+  const { menuRef: userMenuRef } = userMenu;
+
   const handlePiaQuickStart = () => {
-    console.log("Quick-start PIA");
+    navigate("/pia/new");
   };
 
   const handleLogout = async () => {
@@ -74,19 +80,9 @@ const Topbar = () => {
 
   const handleChangeView = () => {
     if (!nextRole) return;
-    setMenuOpen(false);
+    userMenu.close();
     switchRole(nextRole);
   };
-
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
-        setMenuOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
 
   return (
     <header
@@ -121,19 +117,74 @@ const Topbar = () => {
           onClick={toggleTheme}
         />
 
-        <IconButton
-          icon={Bell}
-          label="Notifications"
-          badge={notifCount}
-          onClick={() => setNotifCount(0)}
-        />
+        {/* NOTIFICATIONS */}
+        <div className="relative" ref={notifMenuRef}>
+          <IconButton
+            icon={Bell}
+            label="Notifications"
+            badge={notifMenu.unreadCount}
+            onClick={notifMenu.toggle}
+          />
+
+          {notifMenu.isOpen && (
+            <div
+              className="
+                absolute top-[calc(100%+8px)] right-0
+                w-80 max-h-96 overflow-y-auto
+                bg-surface border border-border
+                rounded-md shadow-[0_8px_24px_rgba(0,0,0,0.24)]
+                p-2 z-50
+              "
+            >
+              <div className="flex items-center justify-between px-3 py-2">
+                <span className="font-body text-[13px] font-semibold text-text-primary">
+                  Notifications
+                </span>
+                {notifMenu.unreadCount > 0 && (
+                  <button
+                    onClick={notifMenu.onMarkAllRead}
+                    className="font-body text-xs text-accent hover:underline cursor-pointer bg-transparent border-none"
+                  >
+                    Mark all as read
+                  </button>
+                )}
+              </div>
+
+              <div className="h-px bg-border my-1" />
+
+              {notifMenu.notifications.length === 0 ? (
+                <p className="px-3 py-4 text-xs text-text-muted text-center">
+                  No notifications yet
+                </p>
+              ) : (
+                notifMenu.notifications.map((n) => (
+                  <button
+                    key={n.id}
+                    onClick={() => notifMenu.onSelect(n.id)}
+                    className={`
+                      flex flex-col items-start gap-0.5 w-full px-3 py-2
+                      bg-transparent border-none rounded-sm text-left
+                      cursor-pointer transition hover:bg-surface-2
+                      ${!n.read ? "bg-accent/5" : ""}
+                    `}
+                  >
+                    <span className="font-body text-[13px] text-text-primary">{n.title}</span>
+                    {n.body && (
+                      <span className="font-body text-xs text-text-muted">{n.body}</span>
+                    )}
+                  </button>
+                ))
+              )}
+            </div>
+          )}
+        </div>
 
         {/* USER MENU */}
-        <div className="relative" ref={menuRef}>
+        <div className="relative" ref={userMenuRef}>
           <button
             aria-label="User menu"
-            aria-expanded={menuOpen}
-            onClick={() => setMenuOpen((prev) => !prev)}
+            aria-expanded={userMenu.isOpen}
+            onClick={userMenu.toggle}
             className="
               relative w-9 h-9 rounded-full
               bg-transparent border border-border
@@ -156,7 +207,7 @@ const Topbar = () => {
             />
           </button>
 
-          {menuOpen && (
+          {userMenu.isOpen && (
             <div
               className="
                 absolute top-[calc(100%+8px)] right-0
@@ -210,7 +261,6 @@ const Topbar = () => {
                 Settings
               </button>
 
-              {/* CHANGE VIEW — only shown when the user actually holds more than one role */}
               {canSwitchRole && nextRole && (
                 <button
                   onClick={handleChangeView}

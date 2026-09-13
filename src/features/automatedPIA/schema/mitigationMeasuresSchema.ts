@@ -8,7 +8,7 @@ export const mitigationMeasuresSchema = z.object({
     .max(2000, 'Must be under 2000 characters'),
 
   additionalControlsRequired: yesNoNaSchema,
-  additionalControlsSpecify: z.string().optional().or(z.literal('')),
+  additionalControlsSpecify: z.string(),
   residualRiskLevel: lowMediumHighNaSchema,
 })
 

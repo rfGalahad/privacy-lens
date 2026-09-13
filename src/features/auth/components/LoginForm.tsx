@@ -112,7 +112,7 @@ const LoginForm = () => {
         <p className="mt-(--space-4) text-center text-[0.88rem] text-text-muted">
           Don't have an account?{" "}
           <a
-            href="#register"
+            href="/subscribe"
             className="text-accent font-medium no-underline 
                        transition-colors duration-(--transition) 
                        hover:underline 

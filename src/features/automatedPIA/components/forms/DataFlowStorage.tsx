@@ -113,9 +113,8 @@ export const DataFlowStorage = withForm({
           >
             {(field) => (
               <field.RadioGroup
-                label="Is personal data transferred to third parties or outside the organization?"
+                legend="Is personal data transferred to third parties or outside the organization?"
                 options={YES_NO_NA_OPTIONS}
-                required
               />
             )}
           </form.AppField>

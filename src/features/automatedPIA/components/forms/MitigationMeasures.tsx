@@ -84,9 +84,8 @@ export const MitigationMeasures = withForm({
           >
             {(field) => (
               <field.RadioGroup
-                label="Are there additional controls or mitigation measures required?"
+                legend="Are there additional controls or mitigation measures required?"
                 options={YES_NO_NA_OPTIONS}
-                required
               />
             )}
           </form.AppField>
@@ -115,9 +114,8 @@ export const MitigationMeasures = withForm({
           >
             {(field) => (
               <field.RadioGroup
-                label="What is the residual risk level after implementing mitigation measures?"
+                legend="What is the residual risk level after implementing mitigation measures?"
                 options={LOW_MEDIUM_HIGH_NA_OPTIONS}
-                required
               />
             )}
           </form.AppField>

@@ -24,7 +24,7 @@ export function useAuthSession(dispatch: Dispatch<AuthAction>) {
   useEffect(() => {
     let cancelled = false;
 
-    async function handleSession(session: Session | null, shouldRedirect: boolean) {
+    async function handleSession(session: Session | null) {
       try {
         if (!session) {
           dispatch({ type: "AUTH_LOGOUT" });
@@ -54,11 +54,11 @@ export function useAuthSession(dispatch: Dispatch<AuthAction>) {
     }
 
     getSession()
-      .then((session) => handleSession(session, false))
+      .then((session) => handleSession(session))
       .catch(() => dispatch({ type: "AUTH_LOGOUT" }));
 
-    const { data: { subscription } } = onAuthStateChange((event, session) => {
-      handleSession(session, event === "SIGNED_IN");
+    const { data: { subscription } } = onAuthStateChange((_event, session) => {
+      handleSession(session);
     });
 
     return () => {
