@@ -13,6 +13,7 @@ type ApprovalSignOffProps = {
   handleNext: () => void;
   currentStep: number;
   totalSteps: number;
+  isSubmitting?: boolean;
 }
 
 //-----------------------------------------------------------
@@ -28,25 +29,14 @@ const SIGN_OFF_ROWS = [
 //-----------------------------------------------------------
 // COMPONENT
 //-----------------------------------------------------------
-
+ 
 export const ApprovalSignOff = withForm({
   defaultValues: piaFormDefaultValues,
   props: {} as ApprovalSignOffProps,
-  render: ({ form, handleBack, handleNext, currentStep, totalSteps }) => {
+  render: ({ form, handleBack, currentStep, totalSteps, isSubmitting }) => {
 
-    const handleNextClick = async () => {
-      await form.validateAllFields('submit')
-
-      const hasStepErrors = SIGN_OFF_ROWS.some(({ key }) => {
-        const meta = form.getFieldMeta(key)
-        return (meta?.errors?.length ?? 0) > 0
-      })
-
-      if (!hasStepErrors) {
-        handleNext()
-      }
-    }
-
+    const handleSubmitClick = () => form.handleSubmit();
+    
     return (
       <div className="flex flex-col gap-6 bg-surface rounded-sm">
         <div className="flex items-center justify-between border-b border-border px-5 py-5">
@@ -84,9 +74,11 @@ export const ApprovalSignOff = withForm({
         </div>
 
         <FormButtons
+          nextLabel={isSubmitting ? 'Analyzing…' : 'Submit PIA'}
           onBack={handleBack}
-          onNext={handleNextClick}
+          onNext={handleSubmitClick}
           backDisabled={currentStep === 1}
+          nextDisabled={isSubmitting}
         />
       </div>
     )

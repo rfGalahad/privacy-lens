@@ -33,6 +33,14 @@ import {
   MitigationMeasures,
   ApprovalSignOff,
 } from '../components/forms';
+import { useSubmitPia } from '../hooks/useSubmitPia';
+import { PIAResultView } from '../components/results';
+import { useState } from 'react';
+import type { FinalizePayload, ResultMode } from '../types/review';
+
+//-----------------------------------------------------------
+// CONSTANTS
+//-----------------------------------------------------------
 
 const PIA_FORM_STEPS: FormStep[] = [
   { id: 'general-information', label: 'General Information', icon: ClipboardList },
@@ -48,8 +56,21 @@ const PIA_FORM_STEPS: FormStep[] = [
   { id: 'mitigation-measures', label: 'Mitigation Measures', icon: ShieldAlert },
   { id: 'approval-sign-off', label: 'Approval and Sign-off', icon: FileSignature },
 ];
+ 
+//-----------------------------------------------------------
+// QUICK START PIA PAGE
+//-----------------------------------------------------------
 
 export const QuickStartPIAPage = () => {
+
+  const [mode, setMode] = useState<ResultMode>('view');
+  const [finalized, setFinalized] = useState<FinalizePayload | null>(null);
+
+  const handleReset = () => {
+    setMode('view');
+    setFinalized(null);
+    reset();
+  };
 
   const {
     activeStep,
@@ -59,22 +80,46 @@ export const QuickStartPIAPage = () => {
     handleNext
   } = useStepper(PIA_FORM_STEPS.length);
 
+  const { 
+    mutate, 
+    data: analysis, 
+    isPending, 
+    reset 
+  } = useSubmitPia();
+
   const form = useAppForm({
     defaultValues: piaFormDefaultValues,
-    validators: {
-      onSubmit: piaFormSchema,
-    },
-    onSubmit: async ({ value }) => {
-      console.log('submit', value)
-    },
-  })
+    validators: { onSubmit: piaFormSchema },
+    onSubmit: ({ value }) => mutate(value),
+  });
 
   const stepProps = {
-    form,
-    handleBack,
+    form, 
+    handleBack, 
     handleNext,
     currentStep: page,
     totalSteps: PIA_FORM_STEPS.length,
+    isSubmitting: isPending, 
+  };
+
+ 
+  if (analysis) {
+    return (
+      <div className="mx-auto flex flex-col gap-6 pt-6">
+        <PIAResultView
+          analysis={analysis}
+          mode={mode}
+          finalized={finalized}
+          formValues={form.state.values}
+          onReset={handleReset}
+          onStartReview={() => setMode('review')}
+          onFinalize={(payload) => {
+            setFinalized(payload);
+            setMode('finalized');
+          }}
+        />
+      </div>
+    );
   }
 
   return (

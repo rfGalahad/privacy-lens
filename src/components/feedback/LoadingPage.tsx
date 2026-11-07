@@ -2,9 +2,9 @@ interface LoadingPageProps {
   label?: string;
 }
 
-export default function LoadingPage({ 
+export const LoadingPage = ({ 
   label = "Loading" 
-}: LoadingPageProps ) {
+}: LoadingPageProps ) => {
   return (
     <div
       role="status"
@@ -27,3 +27,5 @@ export default function LoadingPage({
     </div>
   );
 }
+
+export default LoadingPage;

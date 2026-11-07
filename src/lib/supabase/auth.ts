@@ -3,7 +3,7 @@ import type { AuthChangeEvent } from "@supabase/supabase-js";
 import type { User, UserRole } from "@/features/auth/types";
 import { getFullName } from "@/utils/string";
 import { getAdminById } from "./admin";
-import { getSubscriberByAuthId } from "./subscriber";
+import { getSubscriberByAuthId } from "./subscribers";
 
 type ResolvedRoles = {
   roles: UserRole[];
@@ -11,6 +11,7 @@ type ResolvedRoles = {
 };
 
 const ROLE_PRIORITY: UserRole[] = ["admin", "subscriber"];
+const ACTIVE_ROLE_KEY = "activeRole";
 
 export const ROLE_ROUTES: Record<UserRole, string> = {
   admin: "/admin/dashboard",
@@ -72,8 +73,6 @@ export async function resolveUserRoles(authUserId: string): Promise<ResolvedRole
 
   return { roles, name };
 }
-
-const ACTIVE_ROLE_KEY = "activeRole";
 
 export function resolveActiveRole(roles: UserRole[]): UserRole {
   const stored = localStorage.getItem(ACTIVE_ROLE_KEY) as UserRole | null;

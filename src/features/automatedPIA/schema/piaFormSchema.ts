@@ -138,7 +138,7 @@ export const piaFormDefaultValues = {
 
   // K. Mitigation Measures
   existingControls: '',
-  additionalControlsRequired: '',
+  additionalControlsRequired: 'na',
   additionalControlsSpecify: '',
   residualRiskLevel: '',
 
@@ -146,4 +146,4 @@ export const piaFormDefaultValues = {
   preparedBy: { ...emptySignOff },
   reviewedBy: { ...emptySignOff },
   approvedBy: { ...emptySignOff },
-}
+} as unknown as PIAFormValues

@@ -1,0 +1,1 @@
+export { PIAResultView } from './PIAResultView';

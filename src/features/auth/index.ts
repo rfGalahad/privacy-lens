@@ -3,3 +3,5 @@ export { useAuth } from "./hooks/useAuth";
 
 export { LoginPage } from './pages/LoginPage';
 export { SetupAccountPage } from './pages/SetupAccountPage'; 
+
+export { RequireAuth } from "./guards/RequireAuth";

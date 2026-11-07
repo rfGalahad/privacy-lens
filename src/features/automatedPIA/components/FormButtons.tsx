@@ -4,7 +4,7 @@ interface FormButtonsProps {
   onBack?: () => void
   onNext: () => void
   backLabel?: string
-  nextLabel?: string
+  nextLabel?: string 
   backDisabled?: boolean
   nextDisabled?: boolean
   isLoading?: boolean

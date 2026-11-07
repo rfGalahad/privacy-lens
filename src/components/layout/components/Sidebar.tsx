@@ -2,9 +2,6 @@ import { NavLink } from "react-router-dom";
 import {
   LayoutDashboard,
   ClipboardList,
-  ShieldCheck,
-  AlertTriangle,
-  FileBarChart2,
   Building2,
   ScrollText,
   Settings,
@@ -12,7 +9,6 @@ import {
   SlidersHorizontal,
   Plug,
   Activity,
-  ListChecks,
   Rss,
   PlusCircle,
   type LucideIcon,
@@ -42,15 +38,17 @@ export interface SidebarProps {
 //-----------------------------------------------------------
 
 // 5.2 User Dashboard
+
+
 const USER_ITEMS: SidebarItem[] = [
   { key: "dashboard", label: "Dashboard", icon: LayoutDashboard, path: "/users/dashboard" },
   { key: "quick-start", label: "Quick Start", icon: PlusCircle, path: "/users/pias/new" },
   { key: "my-pias", label: "My PIAs", icon: ClipboardList, path: "/users/pias" },
-  { key: "action-items", label: "Action Items", icon: ListChecks, path: "/users/action-items" },
-  { key: "compliance", label: "Compliance", icon: ShieldCheck, path: "/users/compliance" },
-  { key: "risk-register", label: "Risk Register", icon: AlertTriangle, path: "/users/risk-register" },
-  { key: "reports", label: "Reports", icon: FileBarChart2, path: "/users/reports" },
-  { key: "vendor-assessments", label: "Vendor Assessments", icon: Building2, path: "/users/vendors" },
+//  { key: "action-items", label: "Action Items", icon: ListChecks, path: "/users/action-items" },
+//  { key: "compliance", label: "Compliance", icon: ShieldCheck, path: "/users/compliance" },
+//  { key: "risk-register", label: "Risk Register", icon: AlertTriangle, path: "/users/risk-register" },
+//  { key: "reports", label: "Reports", icon: FileBarChart2, path: "/users/reports" },
+//  { key: "vendor-assessments", label: "Vendor Assessments", icon: Building2, path: "/users/vendors" },
   { key: "activity-feed", label: "Recent Activity", icon: Rss, path: "/users/activity" },
   { key: "settings", label: "Settings", icon: Settings, path: "/users/settings" },
 ];

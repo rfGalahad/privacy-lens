@@ -16,7 +16,7 @@ const DashboardLayout = () => {
       <div className="flex-1 flex min-h-0">
         <Sidebar />
         <main className="flex-1 flex justify-center overflow-y-auto bg-bg">
-          <div className='min-w-6xl py-6'>
+          <div className='mx-auto w-full max-w-6xl py-6'>
             <Breadcrumbs items={breadcrumbs} />
             <Outlet />
           </div>
